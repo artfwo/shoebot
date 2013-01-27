@@ -5,12 +5,17 @@ from StringIO import StringIO
 import os.path
 from sys import platform
 
-import cairo
+import cairocffi as cairo
 from PIL import Image as PILImage
-import gtk
+try:
+    import gtk
+except:
+    gtk = None
 
-if platform != 'darwin':
+try:
 	import rsvg
+except:
+    pass
 
 from shoebot.data import Grob, ColorMixin
 from shoebot.util import RecordingSurface

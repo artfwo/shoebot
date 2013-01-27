@@ -32,10 +32,7 @@
 from collections import deque
 from abc import ABCMeta, abstractproperty
 import sys
-import shoebot
 import locale, gettext
-import math as _math
-import cairo
 from shoebot.core.drawqueue import DrawQueue
 
 APP = 'shoebot'

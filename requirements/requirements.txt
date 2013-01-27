@@ -3,6 +3,6 @@
 Pillow==1.7.8
 pymetar==0.19    # examples/demos/pymetar.bot
 numpy==1.6.2
-pycairo
-pygtk            # Used in window mode
-rsvg
+#pycairo
+#pygtk            # Used in window mode
+#rsvg

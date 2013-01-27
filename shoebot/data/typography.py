@@ -27,13 +27,16 @@
 #   WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 #   OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 #   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-import cairo
-import pango
-import pangocairo
+import cairocffi as cairo
+try:
+    import pango
+    import pangocairo
+except:
+    pass
 ## from shoebot.data import Grob, BezierPath, TransformMixin, ColorMixin, _copy_attrs
 from shoebot.data import Grob, BezierPath, ColorMixin, _copy_attrs
 from shoebot.util import RecordingSurfaceA8
-from cairo import PATH_MOVE_TO, PATH_LINE_TO, PATH_CURVE_TO, PATH_CLOSE_PATH
+from cairocffi import PATH_MOVE_TO, PATH_LINE_TO, PATH_CURVE_TO, PATH_CLOSE_PATH
 
 class Text(Grob, ColorMixin):
     
