@@ -18,7 +18,7 @@ except:
     pass
 
 from shoebot.data import Grob, ColorMixin
-from shoebot.util import RecordingSurface
+#from shoebot.util import RecordingSurface
 
 CENTER = 'center'
 CORNER = 'corner'
@@ -57,7 +57,7 @@ class Image(Grob, ColorMixin):
                 elif os.path.splitext(path)[1].lower() == '.svg':
                     handle = rsvg.Handle(path)
                     sw, sh = handle.get_dimension_data()[:2]
-                    imagesurface = RecordingSurface(sw, sh)
+                    imagesurface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, sw, sh)
                     ctx = cairo.Context(imagesurface)
                     handle.render_cairo(ctx)
                 elif os.path.splitext(path)[1].lower() == '.png':

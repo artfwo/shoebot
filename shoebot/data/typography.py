@@ -35,7 +35,7 @@ except:
     pass
 ## from shoebot.data import Grob, BezierPath, TransformMixin, ColorMixin, _copy_attrs
 from shoebot.data import Grob, BezierPath, ColorMixin, _copy_attrs
-from shoebot.util import RecordingSurfaceA8
+#from shoebot.util import RecordingSurfaceA8
 from cairocffi import PATH_MOVE_TO, PATH_LINE_TO, PATH_CURVE_TO, PATH_CLOSE_PATH
 
 class Text(Grob, ColorMixin):
@@ -93,7 +93,7 @@ class Text(Grob, ColorMixin):
     # pre rendering is needed to measure the metrics of the text, it's also useful to get the path, without the need to call _render()
     def _pre_render(self):
         #we use a new CairoContext to pre render the text
-        self._pang_ctx = pangocairo.CairoContext(cairo.Context(RecordingSurfaceA8(0, 0)))
+        self._pang_ctx = pangocairo.CairoContext(cairo.Context(RecordingSurface(cairo.CONTENT_ALPHA, 0, 0)))
         self.layout = self._pang_ctx.create_layout()
         # layout line spacing
         # TODO: the behaviour is not the same as nodebox yet
@@ -121,7 +121,7 @@ class Text(Grob, ColorMixin):
             
 
     def _get_context(self):
-        self._ctx = self._ctx or cairo.Context(RecordingSurfaceA8(0, 0))
+        self._ctx = self._ctx or cairo.Context(RecordingSurface(cairo.CONTENT_COLOR_ALPHA, 0, 0))
         return self._ctx
 
     def _render(self, ctx = None):
@@ -184,7 +184,7 @@ class Text(Grob, ColorMixin):
             self._pre_render()
             
         # here we create a new cairo.Context in order to hold the pathdata
-        tempCairoContext = cairo.Context(RecordingSurfaceA8(1, 1))
+        tempCairoContext = cairo.Context(RecordingSurface(cairo.CONTENT_COLOR_ALPHA, 1, 1))
         tempCairoContext.move_to(self.x,self.y-self.baseline)
         # in here we create a pangoCairoContext in order to display layout on it
         tempPangoCairoContext = pangocairo.CairoContext(tempCairoContext)

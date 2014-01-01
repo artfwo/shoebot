@@ -1,11 +1,11 @@
 #from __future__ import division
 import sys, os
 import gtk
-import cairo
+import cairocffi as cairo
 from socket_server import SocketServerMixin
 
 from shoebot.core import DrawQueueSink
-from shoebot.util import RecordingSurface
+#from shoebot.util import RecordingSurface
 
 ICON_FILE = os.path.join(sys.prefix, 'share', 'pixmaps', 'shoebot-ide.png')
 
@@ -83,7 +83,8 @@ class ShoebotWidget(gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
             self.size = size
             while gtk.events_pending():
                 gtk.main_iteration_do(block=False)
-        meta_surface = RecordingSurface(*size)
+        extents = (0, 0, size[0], size[1])
+        meta_surface = cairo.RecordingSurface(cairo.CONTENT_COLOR_ALPHA, extents)
         return cairo.Context(meta_surface)
 
     def rendering_finished(self, size, frame, cairo_ctx):

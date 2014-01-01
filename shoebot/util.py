@@ -179,46 +179,46 @@ def rgb_to_hsv(r, g, b):
 
 from cairocffi import SVGSurface
 
-_svg_surface = None
-
-def get_svg_surface():
-    global _svg_surface
-    if _svg_surface is None:
-        try:
-            _svg_surface = SVGSurface(None, 0, 0)
-        except:
-            if os.name == 'nt':
-                fobj = 'nul'
-            else:
-                fobj = '/dev/null'
-            _svg_surface = SVGSurface(fobj, 0, 0)
-    return _svg_surface
-
-def RecordingSurface(*size):
-    '''
-    We don't have RecordingSurfaces until cairo 1.10, so this kludge is used
-
-    SVGSurfaces are created, but to stop them ever attempting to output, they
-    are kept in a dict.
-
-    When a surface is needed, create_similar is called to get a Surface from
-    the SVGSurface of the same size
-    '''
-    svg_surface = get_svg_surface()
-    return svg_surface.create_similar(cairo.CONTENT_COLOR_ALPHA, *size)
-
-def RecordingSurfaceA8(*size):
-    '''
-    We don't have RecordingSurfaces until cairo 1.10, so this kludge is used
-
-    SVGSurfaces are created, but to stop them ever attempting to output, they
-    are kept in a dict.
-
-    When a surface is needed, create_similar is called to get a Surface from
-    the SVGSurface of the same size
-    '''
-    svg_surface = get_svg_surface()
-    return svg_surface.create_similar(cairo.CONTENT_ALPHA, *size)
+# _svg_surface = None
+#
+# def get_svg_surface():
+#     global _svg_surface
+#     if _svg_surface is None:
+#         try:
+#             _svg_surface = SVGSurface(None, 0, 0)
+#         except:
+#             if os.name == 'nt':
+#                 fobj = 'nul'
+#             else:
+#                 fobj = '/dev/null'
+#             _svg_surface = SVGSurface(fobj, 0, 0)
+#     return _svg_surface
+#
+# def RecordingSurface(*size):
+#     '''
+#     We don't have RecordingSurfaces until cairo 1.10, so this kludge is used
+#
+#     SVGSurfaces are created, but to stop them ever attempting to output, they
+#     are kept in a dict.
+#
+#     When a surface is needed, create_similar is called to get a Surface from
+#     the SVGSurface of the same size
+#     '''
+#     svg_surface = get_svg_surface()
+#     return svg_surface.create_similar(cairo.CONTENT_COLOR_ALPHA, *size)
+#
+# def RecordingSurfaceA8(*size):
+#     '''
+#     We don't have RecordingSurfaces until cairo 1.10, so this kludge is used
+#
+#     SVGSurfaces are created, but to stop them ever attempting to output, they
+#     are kept in a dict.
+#
+#     When a surface is needed, create_similar is called to get a Surface from
+#     the SVGSurface of the same size
+#     '''
+#     svg_surface = get_svg_surface()
+#     return svg_surface.create_similar(cairo.CONTENT_ALPHA, *size)
 
 
 
