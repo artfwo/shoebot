@@ -25,8 +25,15 @@ from shoebot.util import RecordingSurface
 CENTER = 'center'
 CORNER = 'corner'
 
+class SurfaceRef(object):
+    ''' Cannot have a weakref to a cairo surface, so wrapper is used '''
+    def __init__(self, surface):
+        self.surface = surface
+
+from weakref import WeakValueDictionary
+
 class Image(Grob, ColorMixin):
-    _surface_cache = {} # {filename: width, height, imagesurface}
+    _surface_cache = WeakValueDictionary() # {filename: width, height, imagesurface}
 
     def __init__(self, bot, path = None, x = 0, y = 0, width=None, height=None, alpha=1.0, data=None, pathmode=CORNER, **kwargs):
         Grob.__init__(self, bot)
@@ -54,9 +61,12 @@ class Image(Grob, ColorMixin):
             # writing temp files (e.g. using nodebox's web library, see example 1 of the library)
             # if no data is passed the path is used to open a local file
             if self.data is None:
-                if path in self._surface_cache:
-                    sw, sh, imagesurface = self._surface_cache[path]
-                elif os.path.splitext(path)[1].lower() == '.svg':
+                surfaceref = self._surface_cache.get(path)
+                if surfaceref:
+                    imagesurface = surfaceref.surface
+                    sw = imagesurface.get_width()
+                    sh = imagesurface.get_height()
+                elif os.path.splitext(path)[1].lower() == '.svg' and rsvg is not None:
                     handle = rsvg.Handle(path)
                     sw, sh = handle.get_dimension_data()[:2]
                     imagesurface = RecordingSurface(sw, sh)
@@ -94,7 +104,7 @@ class Image(Grob, ColorMixin):
                     bgra_array = array.array('B', bgra_data)
                     imagesurface = cairo.ImageSurface.create_for_data(bgra_array, cairo.FORMAT_ARGB32, sw, sh, sw*4)
 
-                self._surface_cache[path] = sw, sh, imagesurface
+                self._surface_cache[path] = SurfaceRef(imagesurface)
             else:
                 img = PILImage.open(StringIO(self.data))
 

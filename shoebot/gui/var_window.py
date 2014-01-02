@@ -1,17 +1,13 @@
 #!/usr/bin/env python2
 import sys
-from gi.repository import Gtk
+import gtk
 
 NUMBER = 1
 TEXT = 2
 BOOLEAN = 3
 BUTTON = 4
 
-if sys.platform != 'win32':
-    ICON_FILE = '/usr/share/shoebot/icon.png'
-else:
-    import os.path
-    ICON_FILE = os.path.join(sys.prefix, 'share', 'shoebot', 'icon.png')
+ICON_FILE = next(f for f in ['/usr/share/shoebot/shoebot-ide.png', os.path.join(sys.prefix, 'share', 'pixmaps', 'shoebot-ide.png')] if os.path.exists(f))
 
 class VarWindow(object):
     def __init__(self, parent, bot, title = None):
@@ -51,10 +47,10 @@ class VarWindow(object):
         label = Gtk.Label(label=v.name)
         sliderbox.pack_start(label, False, True, 20)
 
-        adj = Gtk.Adjustment(v.value, v.min, v.max, .1, 2, 1)
+        adj = gtk.Adjustment(v.value, v.min, v.max, .1, 2, 1)
         adj.connect("value_changed", self.cb_set_var, v)
-        hscale = Gtk.HScale(adj)
-        hscale.set_value_pos(Gtk.PositionType.RIGHT)
+        hscale = gtk.HScale(adj)
+        hscale.set_value_pos(gtk.POS_RIGHT)
         sliderbox.pack_start(hscale, True, True, 0)
         container.pack_start(sliderbox, True, True, 0)
 
