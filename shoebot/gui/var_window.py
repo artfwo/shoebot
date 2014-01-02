@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
+import os.path
 import sys
-import gtk
+from gi.repository import Gtk
 
 NUMBER = 1
 TEXT = 2

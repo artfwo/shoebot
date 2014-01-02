@@ -9,7 +9,7 @@ from shoebot.util import RecordingSurface
 
 ICON_FILE = os.path.join(sys.prefix, 'share', 'pixmaps', 'shoebot-ide.png')
 
-class ShoebotWidget(gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
+class ShoebotWidget(Gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
     '''
     Create a double buffered GTK+ widget on which we will draw using Cairo        
     '''
@@ -37,7 +37,6 @@ class ShoebotWidget(gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
         '''
 
         # Create the cairo context
-        cr = self.window.cairo_create()
         if self.scale_fit:
             source_width = self.backing_store.get_width()
             source_height = self.backing_store.get_height()
