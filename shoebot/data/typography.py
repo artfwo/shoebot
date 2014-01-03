@@ -93,7 +93,7 @@ class Text(Grob, ColorMixin):
     # pre rendering is needed to measure the metrics of the text, it's also useful to get the path, without the need to call _render()
     def _pre_render(self):
         #we use a new CairoContext to pre render the text
-        self._pang_ctx = pangocairo.CairoContext(cairo.Context(RecordingSurface(cairo.CONTENT_ALPHA, 0, 0)))
+        self._pang_ctx = pangocairo.CairoContext(cairo.Context(cairo.RecordingSurface(cairo.CONTENT_ALPHA, 0, 0)))
         self.layout = self._pang_ctx.create_layout()
         # layout line spacing
         # TODO: the behaviour is not the same as nodebox yet
