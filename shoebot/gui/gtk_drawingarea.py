@@ -40,11 +40,12 @@ class ShoebotWidget(gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
 
     # Draw in response to an expose-event
     __gsignals__ = { "expose-event": "override" }
-    def __init__(self, scale_fit = True):
+    def __init__(self, scale_fit=True, input_device=None):
         gtk.DrawingArea.__init__(self)
         DrawQueueSink.__init__(self)
 
         self.scale_fit = scale_fit
+        self.input_device = input_device
 
         # Default picture is the shoebot icon
         if os.path.isfile(ICON_FILE):
@@ -67,23 +68,28 @@ class ShoebotWidget(gtk.DrawingArea, DrawQueueSink, SocketServerMixin):
 
             size = self.get_allocation()
 
-            if size.width > source_width or size.height > source_height:
+            if self.first_run or size.width > source_width or size.height > source_height:
                 # Scale up by largest dimension
                 if size.width > source_width:
-                    xscale = float(size.width) / float(source_width)
+                    scale_x = float(size.width) / float(source_width)
                 else:
-                    xscale = 1.0
+                    scale_x = 1.0
 
                 if size.height > source_height:
-                    yscale = float(size.height) / float(source_height)
+                    scale_y = float(size.height) / float(source_height)
                 else:
-                    yscale = 1.0
+                    scale_y = 1.0
 
-                if xscale > yscale:
-                    cr.scale(xscale, xscale)
+                if scale_x > scale_y:
+                    cr.scale(scale_x, scale_x)
+                    if self.input_device:
+                        self.input_device.scale_x = scale_x
+                        self.input_device.scale_y = scale_x
                 else:
-                    cr.scale(yscale, yscale)
-
+                    cr.scale(scale_y, scale_y)
+                    if self.input_device:
+                        self.input_device.scale_x = scale_y
+                        self.input_device.scale_y = scale_y
 
         cr.set_source_surface(self.backing_store)
         # Restrict Cairo to the exposed area; avoid extra work
